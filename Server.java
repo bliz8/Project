@@ -62,7 +62,7 @@ public class Server {
         Server server = new Server(serverSocket);
 
         InetAddress localHost = InetAddress.getLocalHost();
-        System.out.println("\nAddress: " + localHost);
+        System.out.println("\nAddress: " + localHost.getHostAddress());
 
         server.start();
     }

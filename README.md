@@ -4,10 +4,10 @@
 - Server to Client based Chat Application
     - Able to create multiple servers and clients
     - Able to create and connect to the desired ports
-    - Only localhost
+    - Single device only via localhost
 
 ### Features to be implemented
-- [ ] IP-based hosting
+- [ ] Interconnectivity between multiple devices
 - [ ] Better CLI 
 
 ### Java classes used
