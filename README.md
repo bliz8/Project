@@ -7,6 +7,5 @@
     - Only localhost
 
 ### Features to be implemented
-- [ ] Discord-based ports
-- [ ] Discord bot for aid
+- [ ] IP-based hosting
 - [ ] Better CLI 
