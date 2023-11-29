@@ -36,7 +36,6 @@ public class Server {
         try {
             if (serverSocket != null) {
                 serverSocket.close();
-                System.out.println("User disconnected.");
             }
         } catch (IOException e) {
             e.printStackTrace();
