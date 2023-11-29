@@ -4,6 +4,7 @@
 - Server to Client based Chat Application
     - Able to create multiple servers and clients
     - Able to create and connect to the desired ports
+    - Only localhost
 
 ### Features to be implemented
 - [ ] Discord-based ports
