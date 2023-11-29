@@ -3,6 +3,7 @@ package Project;
 import Project.handlers.ClientHandler;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -59,6 +60,10 @@ public class Server {
 
         ServerSocket serverSocket = new ServerSocket(port);
         Server server = new Server(serverSocket);
+
+        InetAddress localHost = InetAddress.getLocalHost();
+        System.out.println("\nAddress: " + localHost);
+
         server.start();
     }
 }

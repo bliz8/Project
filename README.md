@@ -14,6 +14,7 @@
 - [x] [BufferedReader](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)
 - [x] [BufferedWriter](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedWriter.html)
 - [x] [IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html)
+- [x] [InetAddress](https://docs.oracle.com/javase/8/docs/api/java/net/InetAddress.html)
 - [x] [InputStreamReader](https://docs.oracle.com/javase/8/docs/api/java/io/InputStreamReader.html)
 - [x] [OutputStreamWriter](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStreamWriter.html)
 - [x] [ServerSocket](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html)
