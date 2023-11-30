@@ -11,7 +11,7 @@
 - [ ] Better CLI (In-progress)
 
 ### Fixes to be implemented
-- [ ] Functional "leave message"; currently just does not say anything because a broadcast will infinitely run through the entire server, crashing the server eventually
+- [ ] Functional "leave message"; currently just does not say anything because a broadcast will infinitely run through the entire server, crashing the server eventually (In-progress)
 
 
 ### Java classes used
@@ -25,4 +25,4 @@
 - [x] [Socket](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)
 - [x] [UnknownHostException](https://docs.oracle.com/javase/8/docs/api/java/net/UnknownHostException.html)
 - [x] [Scanner](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
-- [x] [ArrayList](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) (Data structure to be changed)
+- [x] [CopyOnWriteArrayList](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CopyOnWriteArrayList.html)

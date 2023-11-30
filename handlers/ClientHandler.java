@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientHandler implements Runnable {
-    public static ArrayList<ClientHandler> ClientHandlers = new ArrayList<>();
+    public static CopyOnWriteArrayList<ClientHandler> ClientHandlers = new CopyOnWriteArrayList<>();
     public Socket socket;
     private BufferedReader bufferReader;
     private BufferedWriter bufferWriter;
@@ -47,15 +47,26 @@ public class ClientHandler implements Runnable {
     }
 
     public void broadcast(String message) {
-        for (ClientHandler ClientHandler : ClientHandlers) {
-            try {
-                if (!ClientHandler.name.equals(name)) {
-                    ClientHandler.bufferWriter.write(message);
-                    ClientHandler.bufferWriter.newLine();
-                    ClientHandler.bufferWriter.flush();
+        for (ClientHandler clientHandler : ClientHandlers) {
+            if (!clientHandler.socket.isConnected()) {
+                try {
+                    clientHandler.bufferWriter.write(message);
+                    clientHandler.bufferWriter.newLine();
+                    clientHandler.bufferWriter.flush();
+                    close(socket, bufferReader, bufferWriter);
+                } catch (IOException e) {
+                    close(socket, bufferReader, bufferWriter);
                 }
-            } catch (IOException e) {
-                close(socket, bufferReader, bufferWriter);
+            } else {
+                try {
+                    if (!clientHandler.name.equals(name)) {
+                        clientHandler.bufferWriter.write(message);
+                        clientHandler.bufferWriter.newLine();
+                        clientHandler.bufferWriter.flush();
+                    }
+                } catch (IOException e) {
+                    close(socket, bufferReader, bufferWriter);
+                }
             }
         }
     }
