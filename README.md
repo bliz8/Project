@@ -4,11 +4,15 @@
 - Server to Client based Chat Application
     - Able to create multiple servers and clients
     - Able to create and connect to the desired ports
-    - Single device only via localhost
+    - Currently functional on a single device
 
 ### Features to be implemented
-- [ ] Interconnectivity between multiple devices
-- [ ] Better CLI 
+- [ ] Interconnectivity between multiple devices via "code" (To be tested)
+- [ ] Better CLI (In-progress)
+
+### Fixes to be implemented
+- [ ] Functional "leave message"; currently just does not say anything because a broadcast will infinitely run through the entire server, crashing the server eventually
+
 
 ### Java classes used
 - [x] [BufferedReader](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)

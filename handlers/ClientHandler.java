@@ -1,5 +1,7 @@
 package Project.handlers;
 
+import Project.addons.Colors;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class ClientHandler implements Runnable {
 
             clientHandlers.add(this);
 
-            broadcast("[SERVER] " + name + " has joined.");
+            broadcast(Colors.GREEN + "[SERVER] " + name + " has joined." + Colors.RESET);
         } catch (IOException e) {
             close(socket, bufferReader, bufferWriter);
         }
@@ -60,7 +62,6 @@ public class ClientHandler implements Runnable {
 
     public void removeClientHandler() {
         clientHandlers.remove(this);
-        broadcast("[SERVER] " + name + " has left.");
     }
 
     public void close(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {

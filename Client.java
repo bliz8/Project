@@ -1,10 +1,13 @@
 package Project;
 
+import Project.addons.Colors;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -79,21 +82,29 @@ public class Client {
     public static void main(String[] args) throws UnknownHostException, IOException {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
-
+        InetAddress address;
+        byte[] rawIP = new byte[4];
+        String[] code;
         int port;
 
-        boolean valid = false;
+        System.out.println(Colors.RED + "\nThis instance will abort if the code is wrong." + Colors.RESET);
 
-        do {
-            System.out.print("Enter the port # (0 to 65535): ");
-            port = scanner.nextInt();
+        System.out.print("Enter the server code given to you: ");
+        code = scanner.nextLine().split("\\s+");
+        port = Integer.parseInt(code[0]);
 
-            if (port >= 0 && port <= 65535) valid = true;
-        } while (!valid);
+        for (int i=1; i<code.length; i++) {
+            int temp = Integer.parseInt(code[i]);
+            byte unsignedB = (byte) (temp & 0xff);
+            rawIP[i-1] = unsignedB;
+        }
+
+        address = InetAddress.getByAddress(rawIP);
+
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
         
-        Socket socket = new Socket("localhost", port);
+        Socket socket = new Socket(address, port);
         Client client = new Client(socket, name);
         client.read();
         client.send();

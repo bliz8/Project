@@ -1,5 +1,6 @@
 package Project;
 
+import Project.addons.Colors;
 import Project.handlers.ClientHandler;
 
 import java.io.IOException;
@@ -16,12 +17,12 @@ public class Server {
     }
 
     public void start() {
-        System.out.println("Server created.");
+        System.out.println(Colors.GREEN + "\nServer created." + Colors.RESET);
 
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                System.out.println("User connected.");
+                System.out.println(Colors.YELLOW + "User connected." + Colors.RESET);
 
                 ClientHandler clientHandler = new ClientHandler(socket);
 
@@ -58,11 +59,14 @@ public class Server {
         
         scanner.close();
 
-        ServerSocket serverSocket = new ServerSocket(port);
+        InetAddress serverAddress = InetAddress.getLocalHost();
+        byte[] ip = serverAddress.getAddress();
+
+        ServerSocket serverSocket = new ServerSocket(port, 0, serverAddress);
         Server server = new Server(serverSocket);
 
-        InetAddress localHost = InetAddress.getLocalHost();
-        System.out.println("\nAddress: " + localHost.getHostAddress());
+        System.out.print("Server Code: " + port);
+        for (byte b : ip) System.out.print(" " + b);
 
         server.start();
     }
