@@ -25,4 +25,4 @@
 - [x] [Socket](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)
 - [x] [UnknownHostException](https://docs.oracle.com/javase/8/docs/api/java/net/UnknownHostException.html)
 - [x] [Scanner](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
-- [x] [ArrayList](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)
+- [x] [ArrayList](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) (Data structure to be changed)
