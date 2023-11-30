@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientHandler implements Runnable {
-    public static CopyOnWriteArrayList<ClientHandler> ClientHandlers = new CopyOnWriteArrayList<>();
+    public static CopyOnWriteArrayList<ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
     public Socket socket;
     private BufferedReader bufferReader;
     private BufferedWriter bufferWriter;
@@ -24,7 +24,7 @@ public class ClientHandler implements Runnable {
             this.bufferWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
             this.name = bufferReader.readLine();
 
-            ClientHandlers.add(this);
+            clientHandlers.add(this);
 
             broadcast(Colors.GREEN + "[SERVER] " + name + " has joined." + Colors.RESET);
         } catch (IOException e) {
@@ -47,33 +47,21 @@ public class ClientHandler implements Runnable {
     }
 
     public void broadcast(String message) {
-        for (ClientHandler clientHandler : ClientHandlers) {
-            if (!clientHandler.socket.isConnected()) {
-                try {
+        for (ClientHandler clientHandler : clientHandlers) {
+            try {
+                if (!clientHandler.name.equals(name)) {
                     clientHandler.bufferWriter.write(message);
                     clientHandler.bufferWriter.newLine();
                     clientHandler.bufferWriter.flush();
-                    close(socket, bufferReader, bufferWriter);
-                } catch (IOException e) {
-                    close(socket, bufferReader, bufferWriter);
                 }
-            } else {
-                try {
-                    if (!clientHandler.name.equals(name)) {
-                        clientHandler.bufferWriter.write(message);
-                        clientHandler.bufferWriter.newLine();
-                        clientHandler.bufferWriter.flush();
-                    }
-                } catch (IOException e) {
-                    close(socket, bufferReader, bufferWriter);
-                }
+            } catch (IOException e) {
+                close(socket, bufferReader, bufferWriter);
             }
         }
     }
 
     public void removeClientHandler() {
-        ClientHandlers.remove(this);
-        broadcast(Colors.RED + "[SERVER] " + name + " has left." + Colors.RESET);
+        clientHandlers.remove(this);
     }
 
     public void close(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
