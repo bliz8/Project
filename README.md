@@ -13,7 +13,6 @@
 ### Fixes to be implemented
 - [ ] Functional "leave message"; currently just does not say anything because a broadcast will infinitely run through the entire server, crashing the server eventually (In-progress)
 
-
 ### Java classes used
 - [x] [BufferedReader](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)
 - [x] [BufferedWriter](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedWriter.html)

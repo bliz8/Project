@@ -14,18 +14,18 @@ import java.util.Scanner;
 
 public class Client {
     private Socket socket;
-    private BufferedReader bufferredReader;
-    private BufferedWriter bufferredWriter;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
     private String name;
 
     public Client(Socket socket, String name) {
         try {
             this.socket = socket;
-            this.bufferredWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
-            this.bufferredReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
+            this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
+            this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
             this.name = name;
         } catch (IOException e) {
-            close(socket, bufferredReader, bufferredWriter);
+            close();
         }
     }
 
@@ -33,9 +33,9 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            bufferredWriter.write(name);
-            bufferredWriter.newLine();
-            bufferredWriter.flush();
+            bufferedWriter.write(name);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
 
             while (socket.isConnected()) {
                 String prefix = "/";
@@ -51,9 +51,9 @@ public class Client {
                         if (cmdParams.length == 2 && !startsWithWhitespace) {
                             String nickname = cmdParams[1];
 
-                            bufferredWriter.write(Colors.CYAN + name + " changed name to " + nickname + Colors.RESET);
-                            bufferredWriter.newLine();
-                            bufferredWriter.flush();
+                            bufferedWriter.write(Colors.CYAN + name + " changed name to " + nickname + Colors.RESET);
+                            bufferedWriter.newLine();
+                            bufferedWriter.flush();
 
                             name = nickname;
 
@@ -61,14 +61,14 @@ public class Client {
                         }
                     }
                 } else {
-                    bufferredWriter.write("<" + name + "> " + message);
-                    bufferredWriter.newLine();
-                    bufferredWriter.flush();
+                    bufferedWriter.write("<" + name + "> " + message);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
                 }
             }
         } catch (IOException e) {
             scanner.close();
-            close(socket, bufferredReader, bufferredWriter);
+            close();
         }
     }
 
@@ -80,11 +80,11 @@ public class Client {
                     String message;
 
                     while (socket.isConnected()) {
-                        message = bufferredReader.readLine();
+                        message = bufferedReader.readLine();
                         System.out.println(message);
                     }
                 } catch (IOException e) {
-                    close(socket, bufferredReader, bufferredWriter);
+                    close();
                 }
             }
         };
@@ -92,7 +92,7 @@ public class Client {
         new Thread(runnable).start();
     }
 
-    public void close(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+    public void close() {
         try {
             if (bufferedReader != null) bufferedReader.close();
             if (bufferedWriter != null) bufferedWriter.close();
