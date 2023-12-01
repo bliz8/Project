@@ -42,6 +42,7 @@ public class ClientHandler implements Runnable {
                 broadcast(message);
             } catch (IOException e) {
                 close(socket, bufferReader, bufferWriter);
+                break;
             }
         }
     }
@@ -62,6 +63,7 @@ public class ClientHandler implements Runnable {
 
     public void removeClientHandler() {
         clientHandlers.remove(this);
+        broadcast(Colors.RED + "[SERVER] " + name + " has left." + Colors.RESET);
     }
 
     public void close(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
