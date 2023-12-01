@@ -1,7 +1,7 @@
 package Project;
 
 import Project.addons.Colors;
-import Project.handlers.ClientHandler;
+import Project.handlers.ConnectionHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -24,7 +24,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println(Colors.YELLOW + "User connected." + Colors.RESET);
 
-                ClientHandler clientHandler = new ClientHandler(socket);
+                ConnectionHandler clientHandler = new ConnectionHandler(socket);
 
                 Thread thread = new Thread(clientHandler);
                 thread.start();

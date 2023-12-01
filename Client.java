@@ -38,10 +38,33 @@ public class Client {
             bufferredWriter.flush();
 
             while (socket.isConnected()) {
+                String prefix = "/";
                 String message = scanner.nextLine();
-                bufferredWriter.write("<" + name + "> " + message);
-                bufferredWriter.newLine();
-                bufferredWriter.flush();
+
+                if (message.startsWith(prefix)) {
+                    String command = message.substring(1);
+
+                    if (command.startsWith("nick")) {
+                        String[] cmdParams = command.split("\\s", 2);
+                        boolean startsWithWhitespace = Character.isWhitespace(cmdParams[1].charAt(0));
+                        
+                        if (cmdParams.length == 2 && !startsWithWhitespace) {
+                            String nickname = cmdParams[1];
+
+                            bufferredWriter.write(Colors.CYAN + name + " changed name to " + nickname + Colors.RESET);
+                            bufferredWriter.newLine();
+                            bufferredWriter.flush();
+
+                            name = nickname;
+
+                            System.out.println(Colors.CYAN + "Successfully changed name" + Colors.RESET);
+                        }
+                    }
+                } else {
+                    bufferredWriter.write("<" + name + "> " + message);
+                    bufferredWriter.newLine();
+                    bufferredWriter.flush();
+                }
             }
         } catch (IOException e) {
             scanner.close();
@@ -87,7 +110,7 @@ public class Client {
         String[] code;
         int port;
 
-        System.out.println(Colors.RED + "\nThis instance will abort if the code is wrong." + Colors.RESET);
+        System.out.println(Colors.RED + "\nThis instance will abort if the code is wrong" + Colors.RESET);
 
         System.out.print("Enter the server code given to you: ");
         code = scanner.nextLine().split("\\s+");
