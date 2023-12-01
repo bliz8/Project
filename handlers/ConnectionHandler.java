@@ -13,22 +13,22 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ConnectionHandler implements Runnable {
     public static CopyOnWriteArrayList<ConnectionHandler> connectionHandlers = new CopyOnWriteArrayList<>();
     public Socket socket;
-    private BufferedReader bufferReader;
-    private BufferedWriter bufferWriter;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
     private String name;
 
     public ConnectionHandler(Socket socket) {
         try {
             this.socket = socket;
-            this.bufferReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
-            this.bufferWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
-            this.name = bufferReader.readLine();
+            this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
+            this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
+            this.name = bufferedReader.readLine();
 
             connectionHandlers.add(this);
 
             broadcast(Colors.GREEN + "[SERVER] " + name + " has joined." + Colors.RESET);
         } catch (IOException e) {
-            close(socket, bufferReader, bufferWriter);
+            close();
         }
     }
 
@@ -38,10 +38,10 @@ public class ConnectionHandler implements Runnable {
 
         while (socket.isConnected()) {
             try {
-                message = bufferReader.readLine();
+                message = bufferedReader.readLine();
                 broadcast(message);
             } catch (IOException e) {
-                close(socket, bufferReader, bufferWriter);
+                close();
                 break;
             }
         }
@@ -51,12 +51,12 @@ public class ConnectionHandler implements Runnable {
         for (ConnectionHandler connectionHandler : connectionHandlers) {
             try {
                 if (!connectionHandler.name.equals(name)) {
-                    connectionHandler.bufferWriter.write(message);
-                    connectionHandler.bufferWriter.newLine();
-                    connectionHandler.bufferWriter.flush();
+                    connectionHandler.bufferedWriter.write(message);
+                    connectionHandler.bufferedWriter.newLine();
+                    connectionHandler.bufferedWriter.flush();
                 }
             } catch (IOException e) {
-                close(socket, bufferReader, bufferWriter);
+                close();
             }
         }
     }
@@ -66,7 +66,7 @@ public class ConnectionHandler implements Runnable {
         broadcast(Colors.RED + "[SERVER] " + name + " has left." + Colors.RESET);
     }
 
-    public void close(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+    public void close() {
         removeConnectionHandler();
         try {
             if (bufferedReader != null) bufferedReader.close();

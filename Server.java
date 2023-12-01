@@ -7,16 +7,21 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.Scanner;
 
 public class Server {
     private ServerSocket serverSocket;
+    private ExecutorService pool;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
     public void start() {
+        pool = Executors.newCachedThreadPool();
+        
         System.out.println(Colors.GREEN + "\nServer created." + Colors.RESET);
 
         try {
@@ -25,9 +30,7 @@ public class Server {
                 System.out.println(Colors.YELLOW + "User connected." + Colors.RESET);
 
                 ConnectionHandler clientHandler = new ConnectionHandler(socket);
-
-                Thread thread = new Thread(clientHandler);
-                thread.start();
+                pool.execute(clientHandler);
             }
         } catch (IOException e) {
 
@@ -36,8 +39,14 @@ public class Server {
 
     public void close() {
         try {
+            pool.shutdown();
+
             if (serverSocket != null) {
                 serverSocket.close();
+            }
+
+            for (ConnectionHandler connectionHandler : ConnectionHandler.connectionHandlers) {
+                connectionHandler.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
