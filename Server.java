@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import java.util.Scanner;
 
 public class Server {
@@ -40,10 +41,7 @@ public class Server {
     public void close() {
         try {
             pool.shutdown();
-
-            if (serverSocket != null) {
-                serverSocket.close();
-            }
+            if (serverSocket != null) serverSocket.close();
 
             for (ConnectionHandler connectionHandler : ConnectionHandler.connectionHandlers) {
                 connectionHandler.close();

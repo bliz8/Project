@@ -1,17 +1,7 @@
 # Advanced CS: DS Project; Chat Application
 ![Static Badge](https://img.shields.io/badge/school-Bellarmine_College_Preparatory-blue)
 ![Static Badge](https://img.shields.io/badge/author-Troy_Vu-orange)
-- Server to Client based Chat Application
-    - Able to create multiple servers and clients
-    - Able to create and connect to the desired ports
-    - Currently functional on a single device
-
-### Features to be implemented
-- [ ] Interconnectivity between multiple devices via "code" (To be tested)
-- [ ] Better CLI (In-progress)
-
-### Fixes to be implemented
-- [ ] Functional "leave message"; currently just does not say anything because a broadcast will infinitely run through the entire server, crashing the server eventually (In-progress)
+- Server to Client based Chat Application using Java
 
 ### Java classes used
 - [x] [BufferedReader](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)
@@ -25,6 +15,8 @@
 - [x] [UnknownHostException](https://docs.oracle.com/javase/8/docs/api/java/net/UnknownHostException.html)
 - [x] [Scanner](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
 - [x] [CopyOnWriteArrayList](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CopyOnWriteArrayList.html)
+- [x] [ExecutorService](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html)
+- [x] [Executors](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html)
 
 
 Credit: 
