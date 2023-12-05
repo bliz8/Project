@@ -10,6 +10,15 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The {@code ConnectionHandler} class represents a handler for individual client connections in a server application.
+ * It manages communication with a connected client, receives and broadcasts messages, and handles the
+ * disconnection of clients.
+ * 
+ * @author Troy Vu {@link https://github.com/bliz8/Project}
+ * @author WittCode {@link https://www.youtube.com/@WittCode}
+ * @see {@link https://www.youtube.com/watch?v=gLfuZrrfKes} by WittCode
+ */
 public class ConnectionHandler implements Runnable {
     public static CopyOnWriteArrayList<ConnectionHandler> connectionHandlers = new CopyOnWriteArrayList<>();
     public Socket socket;

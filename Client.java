@@ -12,6 +12,16 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+/**
+ * The {@code Client} class represents a simple client application that can connect to a server,
+ * send messages, and receive messages in a chat-like communication.
+ * 
+ * @author Troy Vu {@link https://github.com/bliz8/Project}
+ * @author WittCode {@link https://www.youtube.com/@WittCode}
+ * @author NeuralNine {@link https://www.youtube.com/@NeuralNine}
+ * @see {@link https://www.youtube.com/watch?v=gLfuZrrfKes} by WittCode
+ * @see {@link https://www.youtube.com/watch?v=hIc_9Wbn704} by NeuralNine
+ */
 public class Client {
     private Socket socket;
     private BufferedReader bufferedReader;
