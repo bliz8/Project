@@ -24,6 +24,7 @@ import java.util.Scanner;
  * @see {@link https://www.youtube.com/watch?v=hIc_9Wbn704} by NeuralNine
  */
 public class Client {
+    private static int guestNum = 1;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -35,6 +36,10 @@ public class Client {
             this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
             this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
             this.name = name;
+
+            if (this.name.equals("Guest")) {
+                this.name += guestNum++;
+            }
         } catch (IOException e) {
             close();
         }
@@ -60,6 +65,7 @@ public class Client {
                         
                         if (cmdParams.length == 2 && !startsWithWhitespace) {
                             String nickname = cmdParams[1];
+                            nickname = nickname.replace(" ", "_");
 
                             bufferedWriter.write(Colors.CYAN + name + " changed name to " + nickname + Colors.RESET);
                             bufferedWriter.newLine();
@@ -142,6 +148,9 @@ public class Client {
 
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
+        name = name.replace(" ", "_");
+
+        if (name.equals("")) name = "Guest";
         
         Socket socket = new Socket(address, port);
         Client client = new Client(socket, name);
