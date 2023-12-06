@@ -1,6 +1,7 @@
 package Project;
 
 import Project.addons.Colors;
+import Project.addons.Settings;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,10 +49,9 @@ public class Client {
             bufferedWriter.flush();
 
             while (socket.isConnected()) {
-                String prefix = "/";
                 String message = scanner.nextLine();
 
-                if (message.startsWith(prefix)) {
+                if (message.startsWith(Settings.PREFIX)) {
                     String command = message.substring(1);
 
                     if (command.startsWith("nick")) {
@@ -70,10 +70,16 @@ public class Client {
                             System.out.println(Colors.CYAN + "Successfully changed name" + Colors.RESET);
                         }
                     }
+
+                    if (command.startsWith("viewtag")) {
+                        System.out.println("<" + name + ">");
+                    }
                 } else {
-                    bufferedWriter.write("<" + name + "> " + message);
-                    bufferedWriter.newLine();
-                    bufferedWriter.flush();
+                    if (message.length() > 0) {
+                        bufferedWriter.write("<" + name + "> " + message);
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
+                    }  
                 }
             }
         } catch (IOException e) {

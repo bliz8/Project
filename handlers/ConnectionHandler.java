@@ -41,6 +41,10 @@ public class ConnectionHandler implements Runnable {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void run() {
         String message;

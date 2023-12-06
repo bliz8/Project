@@ -29,6 +29,7 @@ public class Server {
     }
 
     public void start() {
+        Scanner scanner = new Scanner(System.in);
         pool = Executors.newCachedThreadPool();
         
         System.out.println(Colors.GREEN + "\nServer created." + Colors.RESET);
@@ -41,9 +42,12 @@ public class Server {
                 ConnectionHandler clientHandler = new ConnectionHandler(socket);
                 pool.execute(clientHandler);
             }
-        } catch (IOException e) {
 
+        } catch (IOException e) {
+            
         }
+
+        scanner.close();
     }
 
     public void close() {
