@@ -27,17 +27,19 @@ public class ConnectionHandler implements Runnable {
     private String name;
 
     public ConnectionHandler(Socket socket) {
-        try {
-            this.socket = socket;
-            this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
-            this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
-            this.name = bufferedReader.readLine();
+        synchronized (ConnectionHandler.class) {
+            try {
+                this.socket = socket;
+                this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
+                this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
+                this.name = bufferedReader.readLine();
 
-            connectionHandlers.add(this);
+                connectionHandlers.add(this);
 
-            broadcast(Colors.GREEN + "[SERVER] " + name + " has joined." + Colors.RESET);
-        } catch (IOException e) {
-            close();
+                broadcast(Colors.GREEN + "[SERVER] " + name + " has joined." + Colors.RESET);
+            } catch (IOException e) {
+                close();
+            }
         }
     }
 

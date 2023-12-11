@@ -28,7 +28,7 @@ public class Server {
         this.serverSocket = serverSocket;
     }
 
-    public void start() {
+    public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
         pool = Executors.newCachedThreadPool();
         
@@ -44,13 +44,14 @@ public class Server {
             }
 
         } catch (IOException e) {
-            
+            System.out.println(Colors.RED + "An error was caught." + Colors.RESET);
         }
 
         scanner.close();
+        this.close();
     }
 
-    public void close() {
+    private void close() {
         try {
             pool.shutdown();
             if (serverSocket != null) serverSocket.close();

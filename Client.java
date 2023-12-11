@@ -24,25 +24,40 @@ import java.util.Scanner;
  * @see {@link https://www.youtube.com/watch?v=hIc_9Wbn704} by NeuralNine
  */
 public class Client {
-    private static int guestNum = 1;
+    private static int numOfClients = 0;
+    private static int numOfGuests = 0;
+    private boolean isHost;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String name;
 
     public Client(Socket socket, String name) {
-        try {
-            this.socket = socket;
-            this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
-            this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
-            this.name = name;
-
-            if (this.name.equals("Guest")) {
-                this.name += guestNum++;
+        synchronized (Client.class) {
+            try {
+                this.bufferedReader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
+                this.bufferedWriter = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()) );
+                this.socket = socket;
+            } catch (IOException e) {
+                close();
             }
-        } catch (IOException e) {
-            close();
+
+            if (name.equals("Guest")) {
+                ++numOfClients;
+                ++numOfGuests;
+                this.name = name + "_" + numOfGuests;
+            } else {
+                ++numOfClients;
+                this.name = name;
+            }
+
+            this.isHost = numOfClients == 1;
         }
+    }
+
+    public void getNum() {
+        System.out.println(numOfClients);
+        System.out.println(numOfGuests);
     }
 
     public void send() {
@@ -58,6 +73,12 @@ public class Client {
 
                 if (message.startsWith(Settings.PREFIX)) {
                     String command = message.substring(1);
+
+                    if (isHost) {
+                        if (command.startsWith("test")) {
+                            System.out.println("You are the host! " + numOfClients);
+                        }
+                    }
 
                     if (command.startsWith("nick")) {
                         String[] cmdParams = command.split("\\s", 2);
@@ -132,7 +153,8 @@ public class Client {
         String[] code;
         int port;
 
-        System.out.println(Colors.RED + "\nThis instance will abort if the code is wrong" + Colors.RESET);
+        System.out.println(Colors.RED + "\n[WARNING] This instance will abort if the code is wrong" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "[NOTE] First person joined will be the host\n" + Colors.RESET);
 
         System.out.print("Enter the server code given to you: ");
         code = scanner.nextLine().split("\\s+");
@@ -152,11 +174,19 @@ public class Client {
 
         if (name.equals("")) name = "Guest";
         
-        Socket socket = new Socket(address, port);
-        Client client = new Client(socket, name);
-        client.read();
-        client.send();
+        try {
+            Socket socket = new Socket(address, port);
+            Client client = new Client(socket, name);
 
-        scanner.close();
+            client.getNum();
+            client.read();
+            client.send();
+        } catch (UnknownHostException e) {
+            System.err.println(Colors.RED + "[UNKNOWN HOST] " + address + Colors.RESET);
+        } catch (IOException e) {
+            System.err.println(Colors.RED + "[CONNECTION ERROR] " + e.getMessage() + Colors.RESET);
+        } finally {
+            scanner.close();
+        }
     }
 }
